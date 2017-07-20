@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Full Projection Site Old | CARTO.js | CartoDB</title>
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+        <link rel="shortcut icon" href="https://carto.com/favicon.ico" />
+        
+        <!-- Map takes up full browser window -->
+        <style>
+            html, body, #map {
+                height: 100%;
+                padding: 0;
+                margin: 0;
+            }
+        
+        #layer_selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 0;
+        }
+        
+        #layer_selector ul {
+            padding: 0; margin: 0;
+            list-style-type: none;
+        }
+        
+        #layer_selector li {
+            border-bottom: 1px solid #999;
+            padding: 15px 30px;
+            font-family: "Helvetica", Arial;
+            font-size: 13px;
+            color: #444;
+            cursor: auto;
+        }
+        
+        #layer_selector li:hover {
+            background-color: #F0F0F0;
+            cursor: pointer;
+        }
+        
+        #layer_selector li.selected {
+            background-color: #EEE;
+        }
+
+        
+        </style>
+        
+        <style type="cartocss/text" id="cartocss">
+            
+            
+            #fullprojectsitedata_6_26_17{
+                marker-width: 10;
+                marker-fill: #FFB927;
+                marker-fill-opacity: 0.9;
+                marker-allow-overlap: true;
+                marker-line-width: 1;
+                marker-line-color: #FFF;
+                marker-line-opacity: 1;
+            }
+    
+        
+            </style>
+        
+        
+        <style type="cartocss/text" id="cartocssPub">
+        #country_pubs_2012_2017 {
+                polygon-fill: ramp([number_of_pubs], (#d3f2a3, #97e196, #6cc08b, #4c9b82, #217a79, #105965, #074050), jenks);
+            }
+        #country_pubs_2012_2017::outline {
+            line-width: 1;
+            line-color: #FFF;
+            line-opacity: 0.5;
+        }
+
+        </style>
+        
+        
+        
+        <link rel="stylesheet" href="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+        
+        
+        
+        
+    </head>
+    <body>
+        <div id="map"></div>
+        
+        <!-- Selector -->
+        <div id="layer_selector" class="cartodb-infobox">
+            <ul>
+                <li id="abc" class="selected">All</li>
+                <li id="efg">Dots</li>
+                <li id="hij">Publications</li>
+            </ul>
+        </div>
+        
+        
+        <!-- include cartodb.js library -->
+        <script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/cartodb.js" type="text/javascript"></script>
+        
+        
+        <!-- Drop your code between the script tags below! -->
+        <script>
+            
+            function main() {
+                // Instantiate new map object, place it in 'map' element
+                var map = new L.Map('map', {
+                                    center: [35,-122], // Western Egypt
+                                    zoom: 4,
+                                    scrollWheelZoom: true
+                                    });
+                                    
+                                    var dotName = 'fullprojectsitedata_6_26_17';
+                                    var pubName = 'country_pubs_2012_2017'
+                                    // setup layer
+                                    
+                                    
+                                    var layers = {
+                                        'dots': {
+                                            sql: "SELECT * FROM " + dotName,
+                                            cartocss: $("#cartocss").html()
+                                        },
+                                        'Publications': {
+                                            
+                                            sql: "SELECT * FROM " + pubName,
+                                            cartocss: $("#cartocssPub").html()
+                                        }
+                                        
+                                    }
+                                    
+                                    
+                                    
+                                    var layerSource = {
+                                        type: 'cartodb',
+                                        user_name: 'noahbennett', // replace with your user name
+                                        sublayers: []
+                                    }
+                                    
+                                    
+                                    
+                                    
+                                    //baselayer
+                                    var layer = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+                                                            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CartoDB</a>'
+                                                            });
+                                                            
+                                                            map.addLayer(layer);
+                                                            
+                                                            // put cartodb layer on top of basemap
+                                                            
+                                                            cartodb.createLayer(map, layerSource)
+                                                            .addTo(map)
+                                                            .done(function(layer) {
+                                                                  // do stuff
+                                                                  
+                                                                  
+                                                                  
+                                                                  layer.createSubLayer(layers[{
+                                                                                              type: 'cartodb',
+                                                                                              sql: "SELECT * FROM " + pubName,
+                                                                                              cartocss: $("#cartocssPub").html()
+                                                                                              }])
+                                                                  
+                                                                  
+                                                                  
+                                                                 // $("input[name='layer']").change(function(){
+                                                                                                  // Clear the sublayers
+                                                                        //                          layer.getSubLayers().forEach(function(sublayer){sublayer.remove()});
+                                                                     //                             // For every check activated, add a sublayer
+                                                                     //                             $.each($("input[name='layer']:checked"), function(){
+                                                                       //                                  layer.createSubLayer(layers[$(this).attr("id")]);
+                                                                          //                               });
+                                                                            //                      });
+                                                                  
+                                                                  
+                                                      
+                                                                  })
+                                                                  .error(function(err) {
+                                                                         console.log("Error: " + err);
+                                                                         });
+                                                                         
+            }
+        
+        window.onload = main;
+        
+        
+        
+            </script>
+        
+    </body>
+</html>

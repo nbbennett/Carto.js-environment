@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Basemap example | CartoDB.js</title>
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+        <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
+
+        <style>
+            html, body, #map {
+                height: 90%;
+                padding: 0;
+                margin: 0;
+            }
+        </style>
+        
+        <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+    </head>
+    
+    <body>
+        <div id="map"></div>
+        
+        <button type="button" id="button-basemap1" onclick="setBasemap1();"> Basemap 1</button>
+        
+        <button type="button" id="button-basemap2" onclick="setBasemap2();"> Basemap 2</button>
+        
+        <button type="button" id="button-basemap3" onclick="setBasemap3();"> Basemap 3</button>
+        
+
+
+
+
+        <!-- include cartodb.js library -->
+        <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+        
+        <!-- include stamen basemap -->
+        <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.3.0"></script>
+
+        
+        <script>
+            var basemap;
+            
+            
+            
+        function setBasemap1(){
+                basemap._url="http://stamen-tiles-{s}.a.ssl.fastly.net/terrain-background/{z}/{x}/{y}.png";
+                basemap.redraw();
+        }
+        
+        function setBasemap2(){
+            basemap._url="http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png";
+            basemap.redraw();
+            
+        }
+        function setBasemap3(){
+            basemap._url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
+            basemap.redraw();
+            
+        }
+        
+
+        
+        function main() {
+            
+            cartodb.createVis('map', 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json')
+            .done(function(vis, layers) {
+                  
+                  
+                  
+                  basemap = layers[0];
+
+                  
+                  })
+                  .error(function(err) {
+                         console.log(err);
+                         });
+        }
+        window.onload = main;
+            </script>
+    </body>
+</html>

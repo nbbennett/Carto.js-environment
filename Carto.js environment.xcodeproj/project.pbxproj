@@ -6,11 +6,66 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXFileReference section */
+		2E4F22E51F19706400365A58 /* BasemapSelectorDraft.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = BasemapSelectorDraft.html; sourceTree = "<group>"; };
+		2E4F22E61F1D7C2500365A58 /* PublicationDraft.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = PublicationDraft.html; sourceTree = "<group>"; };
+		2E4F22E71F1EAE5A00365A58 /* PublicationGroundUp.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = PublicationGroundUp.html; sourceTree = "<group>"; };
+		2E4F22E81F1ED08900365A58 /* FilterPopupBasemap1.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = FilterPopupBasemap1.html; sourceTree = "<group>"; };
+		2E4F22E91F1ED82E00365A58 /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = index.html; path = ../index.html; sourceTree = "<group>"; };
+		2EA591FC1F193D47003FE509 /* FullFilterDraft.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = FullFilterDraft.html; sourceTree = "<group>"; };
+		2ECA33E91F0323E60004CC7D /* cartoPrac.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = cartoPrac.js; sourceTree = "<group>"; };
+		2ECA33EA1F03288A0004CC7D /* cartoHTML.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = cartoHTML.html; sourceTree = "<group>"; };
+		2ECA33ED1F05821C0004CC7D /* dots_show_up.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = dots_show_up.html; sourceTree = "<group>"; };
+		2ECA33EE1F05865A0004CC7D /* carto_academy_lesson_3_NGEE_data.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = carto_academy_lesson_3_NGEE_data.html; sourceTree = "<group>"; };
+		2ECA33EF1F06B3D30004CC7D /* carto_academy_SQL_statements_with_CSS.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = carto_academy_SQL_statements_with_CSS.html; sourceTree = "<group>"; };
+		2ECA33F01F06BD890004CC7D /* SearchBar_Dropdown_menu_Carto.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = SearchBar_Dropdown_menu_Carto.html; sourceTree = "<group>"; };
+		2ECA33F21F06F3190004CC7D /* tutorial-1-finished.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "tutorial-1-finished.html"; path = "../../../Downloads/cartodbjs_tutorial_create_map/tutorial-1-finished.html"; sourceTree = "<group>"; };
+		2ECA33F31F06FE400004CC7D /* PopupsTest.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = PopupsTest.html; sourceTree = "<group>"; };
+		2ECA33F41F0AF9D70004CC7D /* CheckBoxFunctionality.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = CheckBoxFunctionality.html; sourceTree = "<group>"; };
+		2ECA33F51F0DA7DA0004CC7D /* CheckBoxConnection.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = CheckBoxConnection.html; sourceTree = "<group>"; };
+		2ECA33F61F0EC8790004CC7D /* FilterFinished.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = FilterFinished.html; sourceTree = "<group>"; };
+		2ECA33F81F0ED9F80004CC7D /* NoahPopup.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = NoahPopup.html; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
 /* Begin PBXGroup section */
+		2E9E3BE21F21612100B408A3 /* FirstWebsite */ = {
+			isa = PBXGroup;
+			children = (
+				2E4F22E81F1ED08900365A58 /* FilterPopupBasemap1.html */,
+			);
+			name = FirstWebsite;
+			sourceTree = "<group>";
+		};
 		2ECA33E21F0323230004CC7D = {
 			isa = PBXGroup;
 			children = (
+				2ECA33F71F0ED98D0004CC7D /* Early Work */,
+				2E4F22E61F1D7C2500365A58 /* PublicationDraft.html */,
+				2E4F22E71F1EAE5A00365A58 /* PublicationGroundUp.html */,
+				2E9E3BE21F21612100B408A3 /* FirstWebsite */,
 			);
+			sourceTree = "<group>";
+		};
+		2ECA33F71F0ED98D0004CC7D /* Early Work */ = {
+			isa = PBXGroup;
+			children = (
+				2E4F22E91F1ED82E00365A58 /* index.html */,
+				2ECA33F81F0ED9F80004CC7D /* NoahPopup.html */,
+				2ECA33F61F0EC8790004CC7D /* FilterFinished.html */,
+				2ECA33F31F06FE400004CC7D /* PopupsTest.html */,
+				2ECA33F51F0DA7DA0004CC7D /* CheckBoxConnection.html */,
+				2ECA33EA1F03288A0004CC7D /* cartoHTML.html */,
+				2ECA33F41F0AF9D70004CC7D /* CheckBoxFunctionality.html */,
+				2E4F22E51F19706400365A58 /* BasemapSelectorDraft.html */,
+				2ECA33EE1F05865A0004CC7D /* carto_academy_lesson_3_NGEE_data.html */,
+				2ECA33ED1F05821C0004CC7D /* dots_show_up.html */,
+				2ECA33E91F0323E60004CC7D /* cartoPrac.js */,
+				2ECA33F21F06F3190004CC7D /* tutorial-1-finished.html */,
+				2ECA33F01F06BD890004CC7D /* SearchBar_Dropdown_menu_Carto.html */,
+				2EA591FC1F193D47003FE509 /* FullFilterDraft.html */,
+				2ECA33EF1F06B3D30004CC7D /* carto_academy_SQL_statements_with_CSS.html */,
+			);
+			name = "Early Work";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

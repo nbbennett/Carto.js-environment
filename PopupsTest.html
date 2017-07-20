@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<!--
+<html>
+    <head>
+        <title>Searchbox + Dropdown menu + CARTO.js</title>
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+        <link rel="shortcut icon" href="https://cartodb.com/assets/favicon.ico" />
+        
+        <link rel="stylesheet" href="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+        <script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/cartodb.js"></script>
+        
+        
+        
+        <style>
+            html, body, #map {
+                height: 100%;
+                padding: 0;
+                margin: 0;
+            }
+
+        </style>
+        
+    </head>
+    <body>
+        
+        <!-- map div
+        <div id="map"></div>
+        
+        <script type="text/cartocss" id="style">
+            #fullprojectsitedata_6_26_17 {
+                marker-width: 13;
+                marker-fill: ramp([category], (#e70101, #1D6996, #38A6A5, #0F8554, #73AF48, #EDAD08), ("Carbon Sequestration", "Basic Science", "Soil Health & Carbon", "Geothermal Systems", "Atmospheric Science", "Climate Modeling"), "=");
+                marker-fill-opacity: 1;
+                marker-allow-overlap: true;
+                marker-line-width: 1;
+                marker-line-color: #FFF;
+                marker-line-opacity: 1;
+            }
+        </script>
+
+        
+        <script>
+            function main() {
+                // get selector
+                
+
+                // declare map variable
+                map = L.map('map', {
+                            zoomControl: false,
+                            center: [40, -100],
+                            zoom: 4
+                            });
+                            // add basemap
+                            L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CARTO</a>'}).addTo(map);
+                            // add cartodb layer
+                            cartodb.createLayer(map, {
+                                                user_name: 'noahbennett',
+                                                type: 'cartodb',
+                                                sublayers: [{
+                                                            sql: "SELECT * FROM fullprojectsitedata_6_26_17",
+                                                            cartocss: $("#style").html(),
+                                                            }]
+                                                }).addTo(map)
+                                                .done(function(layer){
+                                                      // declare sublayer variable
+                                                      console.log("doing well");
+                                                      
+                                        });
+            }
+        window.onload = main;
+            </script>
+        
+    </body>
+</html>
+
+
+-->
+
+
+
+
+<html>
+    <head>
+        <title>createLayer_sublayer + infowindow</title>
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+        <!-- include cartodb css  -->
+        <link rel="stylesheet" href="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+        <!-- include CARTO.js library -->
+        <script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/cartodb.js"></script>
+        <style type="text/css">
+            html,body,#map{
+                width: 100%;
+                height: 100%;
+                margin: 0;
+            }
+        /* set styles to the custom infowindow */
+        .infowindow-custom{
+            position: relative;
+            max-width: 250px;
+            margin-bottom: 2px;
+            opacity: 0.9;
+            text-align: left;
+            font-style: oblique;
+            background-color: #FFF;
+            color: #fdb462;
+            border-radius: 10px;
+            
+            
+        }
+        
+        .cartodb-popup-content .content h3{
+            font-style: italic;
+        }
+        .cartodb-popup-content .content p{
+            text-align: left;
+            font-style: normal;
+            font-size: 12px;
+            color:black;
+            margin-left: 10px;
+        }
+        
+        /* set styles to the custom infowindow -> close button */
+        .cartodb-popup-close-button {
+            position: absolute;
+            top: -12px;
+            right: -11px;
+            width: 26px;
+            height: 26px;
+            background: url('http://libs.cartodb.com/cartodb.js/v3/themes/img/light.png') no-repeat 0 -23px;
+            text-indent: -9999px;
+            font-size: 0;
+            line-height: 0;
+            opacity: 1;
+            text-transform: uppercase;
+            z-index: 3;
+        }
+        /* set styles to the custom infowindow -> tip container */
+        .cartodb-popup-tip-container{
+            position: absolute;
+            bottom: -13px;
+            left: 23px;
+            width: 16px;
+            height: 14px;
+            background: url('http://libs.cartodb.com/cartodb.js/v3/themes/img/light.png') no-repeat -23px -7px;
+            text-indent: -9999px;
+            font-size: 0;
+            line-height: 0;
+            opacity: 1;
+            z-index: 3;
+        }
+        </style>
+        
+
+    </head>
+    <body>
+        <!-- define map object-->
+        <div id="map"></div>
+        
+        
+        
+        
+        
+        
+        <!-- HTML template new-->
+        <script type="infowindow/html" id="infowindow_template">
+        <div class="CDB-infowindow CDB-infowindow--dark js-infowindow" style="background:#2E3C43" >
+            <div class="CDB-infowindow-close js-close"></div>
+            <div class="CDB-infowindow-container">
+                <div class="CDB-infowindow-bg">
+                    <div class="CDB-infowindow-inner">
+                        <ul class="CDB-infowindow-list js-content">
+                            <li class="CDB-infowindow-listItem">
+                                <h5 class="CDB-infowindow-subtitle">project_name</h5>
+                                <h4 class="CDB-infowindow-title">{{project_name}}</h4>
+                            </li>
+                            <li class="CDB-infowindow-listItem">
+                                <h5 class="CDB-infowindow-subtitle">location_name</h5>
+                                <h4 class="CDB-infowindow-title">{{location_name}}</h4>
+                            </li>
+                            <li class="CDB-infowindow-listItem">
+                                <h5 class="CDB-infowindow-subtitle">category</h5>
+                                <h4 class="CDB-infowindow-title">{{category}}</h4>
+                            </li>
+                            <li class="CDB-infowindow-listItem">
+                                <h5 class="CDB-infowindow-subtitle">website</h5>
+                                <h4 class="CDB-infowindow-title">{{website}}</h4>
+                            </li>
+                            <li class="CDB-infowindow-listItem">
+                                <h5 class="CDB-infowindow-subtitle">brief_summary_of_project_1_2_sentences</h5>
+                                <h4 class="CDB-infowindow-title">{{brief_summary_of_project_1_2_sentences}}</h4>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="CDB-hook">
+                    <div class="CDB-hook-inner"></div>
+                </div>
+            </div>
+        </div>
+        </script>
+        
+        
+        
+        <!-- HTML template for custom infowindow
+        <script type="infowindow/html" id="infowindow_template">
+            <div class="infowindow-custom">
+                <a href="#close" class="cartodb-popup-close-button close">x</a>
+                    <div class="cartodb-popup-content">
+                        <div class="content" style="padding:20px">
+         //<img src="https://image.ibb.co/nzheKa/lbl_logo.png" //Replace link with "{{image_link}}" when all links uploaded and small
+         //    alt="Site Image"
+         //    style="width:100px;height 100px;">
+                            <h3>Project Name:</h3>
+                            <p>{{content.data.project_name}}</p>
+                            <h3>Type:</h3>
+                            <p>{{content.data.type}}</p>
+                            <h3>Category:</h3>
+                            <p>{{content.data.category}}</p>
+                            <p><a href="{{website}}">More Information</a></p>
+                        </div>
+                    </div>
+                    <div class="cartodb-popup-tip-container"></div>
+            </div>
+            </script>-->
+        
+    
+        
+        <script>
+            // define map object
+            var map;
+            
+            function main() {
+                //define map properties
+                map = L.map('map', {
+                            zoomControl: true,
+                            center: [-22.6285913, -42.9358045],
+                            zoom: 3
+                            });
+                            // add OSM basemap to the map object
+                            L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'}).addTo(map);
+                            
+                            var sublayers = [];
+                            
+                            var style = [
+                                         '#fullprojectsitedata_6_26_17 {',
+                                        ' marker-width: 13;',
+                                       '  marker-fill: ramp([category], (#e70101, #1D6996, #38A6A5, #0F8554, #73AF48, #EDAD08), ("Carbon Sequestration", "Basic Science", "Soil Health & Carbon", "Geothermal Systems", "Atmospheric Science", "Climate Modeling"), "=");',
+                                        ' marker-fill-opacity: 1;',
+                                         'marker-allow-overlap: true;',
+                                         'marker-line-width: 1;',
+                                         'marker-line-color: #FFF;',
+                                         'marker-line-opacity: 1;',
+                                         '}'
+                                         ].join('\n')
+                                         cartodb.createLayer(map, {
+                                                             user_name: 'noahbennett',
+                                                             type: 'cartodb',
+                                                             sublayers: [
+                                                                         {
+                                                                         sql: "SELECT * FROM fullprojectsitedata_6_26_17",
+                                                                         cartocss: style
+                                                                         }
+                                                                         ],
+                                                             })
+                                                             .addTo(map)
+                                                             .done(function(layers) {
+                                                                   
+                                                                   // define sublayer
+                                                                   var sublayer = layers.getSubLayer(0);
+                                                                   
+                                                                   // add infowindow interactivity to the sublayer (show cartodb_id and name columns from the table)
+                                                                   cartodb.vis.Vis.addInfowindow(map, sublayer, ['project_name', 'category', 'website', 'type'],{
+                                                                                                 infowindowTemplate: $('#infowindow_template').html(),
+                                                                                                 templateType: 'mustache'
+                                                                                                 });
+                                                                   
+                                                                   // add basemap
+                                                                   L.tileLayer('http://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png',{
+                                                                               attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>',zIndex:100
+                                                                               }).addTo(map);
+                                                                   })
+
+            }
+        
+        window.onload = main;
+            </script>
+    </body>
+</html>

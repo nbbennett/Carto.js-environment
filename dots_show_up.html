@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Full Projection Site Old | CARTO.js | CartoDB</title>
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+        <link rel="shortcut icon" href="https://carto.com/favicon.ico" />
+        
+        <!-- Map takes up full browser window -->
+        <style>
+            html, body, #map {
+                height: 100%;
+                padding: 0;
+                margin: 0;
+            }
+        </style>
+        
+        <style type="cartocss/text" id="cartocss">
+            
+            
+            #fullprojectsitedata_6_26_17{
+                marker-width: 10;
+                marker-fill: #FFB927;
+                marker-fill-opacity: 0.9;
+                marker-allow-overlap: true;
+                marker-line-width: 1;
+                marker-line-color: #FFF;
+                marker-line-opacity: 1;
+            }
+        
+            </style>
+        
+        <link rel="stylesheet" href="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+        
+    </head>
+    <body>
+        <div id="map"></div>
+        
+        
+        
+        
+        <!-- include cartodb.js library -->
+        <script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/cartodb.js" type="text/javascript"></script>
+        
+        
+        <!-- Drop your code between the script tags below! -->
+        <script>
+            
+            function main() {
+                // Instantiate new map object, place it in 'map' element
+                var map = new L.Map('map', {
+                                    center: [35,-122], // Western Egypt
+                                    zoom: 4,
+                                    scrollWheelZoom: true
+                                    });
+                                    
+                                    var tableName = 'fullprojectsitedata_6_26_17';
+                                    // setup layer
+                                    var layerSource = {
+                                        type: 'cartodb',
+                                        user_name: 'noahbennett', // replace with your user name
+                                        sublayers: [{
+                                                    sql: "SELECT * FROM " + tableName,
+                                                    cartocss: $("#cartocss").html()
+                                                    }]
+                                    }
+                                    
+        
+        
+        
+        //baselayer
+        var layer = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+                                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CartoDB</a>'
+                                });
+                                
+                                map.addLayer(layer);
+                                
+                                // put cartodb layer on top of basemap
+                                
+                                cartodb.createLayer(map, layerSource)
+                                .addTo(map)
+                                .done(function(layer) {
+                                      // do stuff
+                                      
+                                      
+                                      
+                                      for (i=0; i<1258; i++){
+                                      console.log(i);
+                                      }
+                                      })
+                                      .error(function(err) {
+                                             console.log("Error: " + err);
+                                             });
+                                             
+                    }
+                                             
+                    window.onload = main;
+                                             
+                                             
+                            
+            </script>
+        
+    </body>
+</html>

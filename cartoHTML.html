@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lesson 1 | CARTO.js | CartoDB</title>
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+        <link rel="shortcut icon" href="https://carto.com/favicon.ico" />
+        
+        <!-- Map takes up full browser window -->
+        <style>
+            html, body, #map {
+                height: 100%;
+                padding: 0;
+                margin: 0;
+            }
+        </style>
+        
+       
+        
+        <style type="cartocss/text" id="cartocss">
+            /** torque visualization */
+            
+            Map {
+                -torque-frame-count:303;
+                -torque-animation-duration:30;
+                -torque-time-attribute:"timestamp";
+                -torque-aggregation-function:"avg(ground_spe)";
+                -torque-resolution:1;
+                -torque-data-aggregation:linear;
+            }
+        
+        #academy_torque_stork{
+            marker-fill-opacity: 0.7;
+            marker-line-color: #FFF;
+            marker-line-width: 0;
+            marker-line-opacity: 1;
+            marker-type: ellipse;
+            marker-width: 4;
+            marker-fill: #5CA2D1;
+            [value < 12] {  /* if 6 <= value < 12, color the marker red */
+                marker-fill: #F84F40;
+            }
+            [value < 6 ] { /* if 3 <= value < 6, color the marker purple */
+                marker-fill: #A53ED5;
+            }
+            [value < 3 ] { /* if value < 3, color the marker blue */
+                marker-fill: #5CA2D1;
+            }
+        }
+        </style>
+        
+         <link rel="stylesheet" href="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+        
+    </head>
+    <body>
+        <div id="map"></div>
+        
+        <!-- include cartodb.js library -->
+        <script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/cartodb.js"></script>
+        
+        
+        <!-- Drop your code between the script tags below! -->
+        <script>
+            
+            function main() {
+                // Instantiate new map object, place it in 'map' element
+                var map = new L.Map('map', {
+                                    center: [25,25], // Western Egypt
+                                    zoom: 4,
+                                    scrollWheelZoom: true
+                                    });
+                                    
+                                    // setup layer
+                                    var layerSource = {
+                                        type: 'torque',
+                                        options: {
+                                            user_name: 'noahbennett', // replace with your user name
+                                            table_name: 'academy_torque_stork',
+                                            cartocss: $("#cartocss").html()
+                                        }
+                                    }
+                                    //baselayer
+                                    var layer = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+                                                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CartoDB</a>'
+                                    });
+                                                            
+                                    map.addLayer(layer);
+                                                            
+                                    // put torque layer on top of basemap
+                                    
+                                    cartodb.createLayer(map, layerSource)
+                                        .addTo(map)
+                                        .done(function(layer) {
+                                            // do stuff
+                                              var torqueLayer = layer;
+                                              
+                                              // pause animation at last frame
+                                            torqueLayer.on('change:time', function(changes) {
+                                                    if (changes.step === torqueLayer.provider.getSteps() - 1) {
+                                                    torqueLayer.pause();
+                                                    }
+                                            });
+                                        })
+                                            .error(function(err) {
+                                                console.log("Error: " + err);
+                                    });
+            }
+        
+        window.onload = main;
+        
+        
+        </script>
+        
+    </body>
+</html>

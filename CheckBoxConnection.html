@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Searchbox + Dropdown menu + CARTO.js</title>
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+        <link rel="shortcut icon" href="https://cartodb.com/assets/favicon.ico" />
+        
+        <link rel="stylesheet" href="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+        <script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/cartodb.js"></script>
+        
+        
+        
+        <script>
+            jQuery(document).ready(function(){
+                                   
+                                   $(".goo-collapsible > li > a").on("click", function(e){
+                                                                     
+                                                                     if(!$(this).hasClass("active")) {
+                                                                     
+                                                                     // hide any open menus and remove all other classes
+                                                                     //$(".goo-collapsible li ul").slideUp(350);
+                                                                     //$(".goo-collapsible li a").removeClass("active");
+                                                                     
+                                                                     // open our new menu and add the open class
+                                                                     $(this).next("ul").slideDown(350);
+                                                                     $(this).addClass("active");
+                                                                     
+                                                                     }else if($(this).hasClass("active")) {
+                                                                     
+                                                                     $(this).removeClass("active");
+                                                                     $(this).next("ul").slideUp(350);
+                                                                     }
+                                                                     });
+                                   
+                                   });
+            </script>
+        
+        
+        
+        <style>
+            html, body, #map {
+                height: 100%;
+                padding: 0;
+                margin: 0;
+            }
+        
+        #dropDown {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 300px;
+        }
+        
+        
+        /*remove list style (circles)*/
+        .goo-collapsible{
+            list-style: none;
+            font-family: 'HelveticaNeue', Arial, Helvetica, sans-serif;
+            font-size:16px}
+        /*header line style and border*/
+        .goo-collapsible li.header{
+            color: #666;
+            padding:4px 12px;
+            border: 1px solid #bbb;}
+        /*set border for every line of menu nad remove top border becouse we dont want double border with header border. */
+        .goo-collapsible li {
+            border: 1px solid #bbb;
+            border-top:0;
+            margin: 0;
+            background:#F0F0F0;}
+        /*remove decoration from text links and treat it as a block.*/
+        .goo-collapsible li a {
+            text-decoration:none;
+            color:#666;
+            padding:8px 12px;
+            padding-right: 50px;
+            display:inline-block;
+        }
+        /*we dont want text to be underline as regular link*/
+        .goo-collapsible li a:hover {
+            background: #F8F8F8;
+            display:inline-block;
+            text-decoration:none;}
+        
+        /*remove list style (circles) for submenu*/
+        .goo-collapsible li ul {
+            list-style: none;
+            font-size: 12px;
+            background: #d3d3d3;
+            display: none;
+            margin:0;
+            padding:0;}
+        /*remove border and set only bottom border for submenu*/
+        .goo-collapsible li ul li {
+            margin:0;
+            border:0;
+            border-bottom:1px solid #bbb;}
+        /*remove bottom border from last element in submenu*/
+        .goo-collapsible li ul li:last-child {
+            border-bottom:0;}
+        /*set padding for submenu to be inline with maimenu*/
+        .goo-collapsible li ul li a {
+            font-size:12px
+            padding: 5px 10px;
+            display: block;
+            padding-left: 30px;
+            display: inline-block;
+            background: #d3d3d3; }
+        /*remove text decoration for links*/
+        .goo-collapsible li ul li a:hover {
+            text-decoration: none;
+            background: #d3d3d3; }
+        
+        /*for menu witch have a submenu display some icom*/
+        .goo-collapsible .dropdown > a {
+            background: url("https://image.flaticon.com/icons/png/512/60/60995.png") no-repeat;
+            background-size: 20px 20px;
+            background-position: 190px 5px;
+            /* fix arrow */
+        }
+        /*set some hover color on drop down menu*/
+        .goo-collapsible .dropdown > a:hover { background: #F8F8F8 url("https://image.flaticon.com/icons/png/512/60/60995.png") no-repeat right center;
+            background-size: 20px 20px;
+            background-position: 190px 5px;
+        }
+        
+        .goo-collapsible li form {
+            display:inline-block;
+        }
+        
+        
+        .goo-collapsible li ul li form {
+            display:inline-block;
+            padding-left: 30px;
+        }
+        </style>
+        
+    </head>
+    <body>
+        
+        <!-- map div -->
+        <div id="map"></div>
+        
+        <!-- Drop Down Menu
+         NOTE: In an ideal world there should be a function to automatically generate this menu
+         NOTE: form id: Gibberish
+               input id: project or category name
+               onchange: function call
+         NOTE: When adding projects, also add them to dictionary in script below--->
+        <div id="dropDown">
+            <ul class="goo-collapsible">
+                <li class="header">CATEGORIES</li>
+                <li class="dropdown" data-type="category" data-attribute="Carbon Sequestration"> <!-- data-type tells type while data-attribute tells what the actual data is --->
+                    <form id="Carbon"><input type="checkbox" name="checkfield" id="Carbon Sequestration" onchange="categorySelect(this)"/></form>
+                    <a class="" href="#"> Carbon Sequestration</a>
+                    <ul>
+                        <li>
+                            <form id="NGEET"><input type="checkbox" name="checkfield" id="NGEE Tropics" onchange="projectSelect(this)"/></form>
+                            <a href="#">NGEE Tropics</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <form id="Basic"><input type="checkbox" name="checkfield" id="Basic Science" onchange="categorySelect(this)"/></form>
+                    <a class="" href="#"> Basic Science&emsp;&emsp;&emsp;&ensp;</a> <!-- Cheesing it a lil --->
+                    <ul>
+                        <li>
+                            <form id="NGEEA"><input type="checkbox" name="checkfield" id="NGEE Arctic" onchange="projectSelect(this)"/></form>
+                            <a href="#">NGEE Arctic</a>
+                        </li>
+                        <li>
+                            <form id="NGEEB"><input type="checkbox" name="checkfield" id="NGEE Arctic Test" onchange="projectSelect(this)"/></form>
+                            <a href="#">NGEE Arctic Test</a>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+        <!-- try making the internal stuff one long form --->
+        
+        
+        <script type="text/cartocss" id="style">
+            #fullprojectsitedata_6_26_17 {
+                marker-width: 13;
+                marker-fill: ramp([category], (#e70101, #1D6996, #38A6A5, #0F8554, #73AF48, #EDAD08), ("Carbon Sequestration", "Basic Science", "Soil Health & Carbon", "Geothermal Systems", "Atmospheric Science", "Climate Modeling"), "=");
+                marker-fill-opacity: 1;
+                marker-allow-overlap: true;
+                marker-line-width: 1;
+                marker-line-color: #FFF;
+                marker-line-opacity: 1;
+            }
+        </script>
+        
+        
+
+        <script>
+            
+            //Big No No (Global Var)
+        var query = "SELECT * FROM fullprojectsitedata_6_26_17 WHERE lat > 90"; //lat should never be greater than 90
+        var dict = { //connects all projects to their category
+            "NGEE Tropics": "Carbon Sequestration",
+            "NGEE Arctic": "Basic Science",
+            "NGEE Arctic Test": "Basic Science"
+        };
+        
+        
+        // Handles Category Clicks
+        function categorySelect(checkboxElm) {
+            var category = checkboxElm.id;
+            if (checkboxElm.checked) { //when checked
+                query = query + " OR category = '" + category +"'";
+                
+                //check all boxes in category
+                for(var dictProject in dict){
+                    var dictCategory = dict[dictProject];
+                    if (dictCategory == category){
+                        query = query.replace((" OR project_name = '" + dictProject + "'"), ''); //to prevent duplicates
+                        query = query + " OR project_name = '" + dictProject +"'";
+                        document.getElementById(dictProject).checked = true;// checks it
+                    }
+                }
+                console.log(query);
+                
+            } else { //when unchecked
+                query = query.replace((" OR category = '" + category + "'"), '');
+                
+                //uncheck all boxes in the category
+                for(var dictProject in dict){
+                    var dictCategory = dict[dictProject];
+                    if (dictCategory == category){
+                        query = query.replace((" OR project_name = '" + dictProject + "'"), '');
+                        document.getElementById(dictProject).checked = false;// checks it
+                    }
+                }
+                console.log(query);
+            }
+        }
+        
+        
+        
+        
+        
+        // Handles Project Clicks
+        function projectSelect(checkboxElm) {
+            var project = checkboxElm.id;
+            if (checkboxElm.checked) { //when checked
+                query = query + " OR project_name = '" + project +"'";
+                console.log(query);
+            } else { //when unchecked
+                query = query.replace((" OR project_name = '" + project + "'"), '');
+                query = query.replace((" OR category = '" + dict[project] + "'"), '');
+                document.getElementById(dict[project]).checked = false;// Unchecks it
+                console.log(query);
+            }
+        }
+        
+        
+        
+        
+        function main() {
+            // get selector
+            
+            var selector = $(".js-category-selector");
+            // get styles & query
+            style = $("#style").text(),
+            //query = $("#query").text(),
+            // declare map variable
+            map = L.map('map', {
+                        zoomControl: false,
+                        center: [40, -100],
+                        zoom: 4
+                        });
+                        // add basemap
+                        L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CARTO</a>'}).addTo(map);
+                        // add cartodb layer
+                        cartodb.createLayer(map, {
+                                            user_name: 'noahbennett',
+                                            type: 'cartodb',
+                                            sublayers: [{
+                                                        sql: query,
+                                                        cartocss: style,
+                                                        }]
+                                            }).addTo(map)
+                                            .done(function(layer){
+                                                  
+                                                  // declare sublayer variable
+                                                  var subLayer = layer.getSubLayer(0);
+                                                  subLayer.setSQL(query);
+                                                  
+                                                  // On checkbox change, reset query
+                                                  var $options = $(".goo-collapsible").find("li form");
+                                                  $options.change(function(e) {
+                                                                 subLayer.setSQL(query);
+                                                                 });
+                                                  
+                                                  
+                                                  
+                                                  /*
+                                                  function createSelector(layer) {
+                                                  var condition = ""; // SQL or CartoCSS string
+                                                  var $options = $(".goo-collapsible").find("li");
+                                                  $options.click(function(e) {
+                                                                 var $li = $(e.target);
+                                                                 var selected = $li.data('attribute');
+                                                                 var type = $li.data('type'); // 'sql' or 'cartocss'
+                                                                 console.log(selected +" Selected\n "+ type + " Type")
+                                                                 
+                                                                 if (type === "cartocss") { // if a CartoCSS selector is chosen, set the style
+                                                                    $options.removeClass('cartocss_selected');
+                                                                    if (selected !== "simple") {
+                                                                        $li.addClass('cartocss_selected');
+                                                                    }
+                                                                 
+                                                                    condition = $('#'+selected).text();
+                                                                    layer.setCartoCSS(condition);
+                                                                 }
+                                                                 else { // if a SQL selector is chosen, re-query the data
+                                                                    $options.removeClass('sql_selected');
+                                                                        if (selected !== "") {
+                                                                            $li.addClass('sql_selected');
+                                                                        }
+                                                                 
+                                                                        layer.setSQL("SELECT * FROM fullprojectsitedata_6_26_17");
+                                                                }
+                                                            });
+                                                  }
+
+                                                  
+                                                  
+                                                  */
+                                                  
+                                                  
+                                
+                                                  
+                                                  
+                                                  });
+
+        }
+        window.onload = main;
+            </script>
+        
+    </body>
+</html>

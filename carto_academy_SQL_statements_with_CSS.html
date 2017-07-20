@@ -1,0 +1,316 @@
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Noah's Attempt at 'Lesson 3 | CARTO.js | CartoDB
+        </title>
+        
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        
+        <link rel="shortcut icon" href="https://carto.com/favicon.ico" />
+        
+        <link rel="stylesheet" href="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+        <link rel="stylesheet" href="https://carto.com/academy/css/cdbui.css" type="text/css" />
+        
+        
+        
+        <style type="text/css">
+            html, body, #map {
+                height: 100%;
+                padding: 0;
+                margin: 0;
+            }
+        #cartocss {
+            position: absolute;
+            top: 10px;
+            left: 20px;
+        }
+        #sql {
+            position: absolute;
+            top: 370px;
+            left: 20px;
+        }
+        #legend {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
+        .cartodb_legend_category{
+            background: rgba(255,255,255,0.9);
+            border-radius: 5px;
+            padding: 0;
+            border: 1px solid #999;
+            width: 200px;
+        }
+        .cartodb_legend_category > p {
+            padding: 5px 30px;
+            font-size: 20px;
+            border-bottom: 1px solid #999;
+        }
+        .cartodb_legend_category ul {
+            padding: 0; margin: 0;
+            list-style-type: none;
+        }
+        .cartodb_legend_category li {
+            padding: 2px 10px;
+            font-family: Helvetica, Arial;
+            font-size: 13px;
+            color: #001;
+            cursor: pointer;
+        }
+        
+        .layer_selector {
+            background: rgba(255,255,255,0.9);
+            border-radius: 5px;
+            padding: 0;
+            border: 1px solid #999;
+            width: 200px;
+        }
+        
+        .layer_selector > p {
+            padding: 15px 30px;
+            border-bottom: 1px solid #999;
+        }
+        
+        .layer_selector ul {
+            padding: 0; margin: 0;
+            list-style-type: none;
+        }
+        .layer_selector li {
+            padding: 15px 30px;
+            font-family: Helvetica, Arial;
+            font-size: 13px;
+            color: #001;
+            cursor: pointer;
+        }
+        .layer_selector li:not(:last-child) {
+            border-bottom: 1px solid #999;
+        }
+        .layer_selector li:hover {
+            background-color: #F0F0F0;
+            cursor: pointer;
+        }
+        
+        .layer_selector li.sql_selected,
+        .layer_selector li.cartocss_selected {
+            background-color: #A6CEE3;
+        }
+        </style>
+        
+        
+        
+        
+        <style type="cartocss/html" id="simple">
+            /* Place simple style here */
+            #fullprojectsitedata_6_26_17 {
+                marker-width: 10;
+                marker-fill: #FFB927;
+                marker-fill-opacity: 0.9;
+                marker-allow-overlap: true;
+                marker-line-width: 1;
+                marker-line-color: #FFF;
+                marker-line-opacity: 1;
+            }
+        
+            </style>
+        
+        <style type="cartocss/html" id="size-by-lat">
+            #fullprojectsitedata_6_26_17 {
+                marker-width: ramp([lat], range(7, 19), quantiles(5));
+                marker-fill: #FFB927;
+                marker-fill-opacity: 0.9;
+                marker-allow-overlap: true;
+                marker-line-width: 1;
+                marker-line-color: #FFF;
+                marker-line-opacity: 1;
+            }
+        </style>
+        
+        
+        <style type="cartocss/html" id="color-by-type">
+            #fullprojectsitedata_6_26_17 {
+                marker-width: 13;
+                marker-fill: ramp([type], (#5F4690, #1D6996, #38A6A5), ("Collaborator", "Field Site", "Partner Organization"), "=");
+                marker-fill-opacity: 1;
+                marker-allow-overlap: true;
+                marker-line-width: 1;
+                marker-line-color: #FFF;
+                marker-line-opacity: 1;
+            }
+        </style>
+        
+        <style type="cartocss/html" id="color-by-category">
+            #fullprojectsitedata_6_26_17 {
+                marker-width: 13;
+                marker-fill: ramp([category], (#e70101, #1D6996, #38A6A5, #0F8554, #73AF48, #EDAD08), ("Carbon Sequestration", "Basic Science", "Soil Health & Carbon", "Geothermal Systems", "Atmospheric Science", "Climate Modeling"), "=");
+                marker-fill-opacity: 1;
+                marker-allow-overlap: true;
+                marker-line-width: 1;
+                marker-line-color: #FFF;
+                marker-line-opacity: 1;
+            }
+        
+            </style>
+        
+        <style type="cartocss/html" id="color-by-project">
+            #fullprojectsitedata_6_26_17 {
+                marker-width: ramp([cartodb_id], range(4, 21), quantiles(5));
+                marker-fill: ramp([location_name], (#5F4690, #1D6996, #38A6A5, #0F8554, #73AF48, #EDAD08, #E17C05, #CC503E, #94346E, #6F4070, #f400dc), ("Jet Propulsion Laboratory Ð NASA", "Lawrence Berkeley National Laboratory (LBNL)", "University of California, Berkeley", "Alfred Wegener Institute (Germany)", "Asian School of the Environment, Nanyang Technological University (Singapore)", "Barrow Environmental Observatory (BEO)", "Brookhaven National Laboratory (BNL)", "Canopy Crane in Parque Metropolitano, Panama", "Cold Regions Research and Engineering Laboratory (CRREL)", "Colorado School of Mines"), "=");
+                marker-fill-opacity: 1;
+                marker-allow-overlap: true;
+                marker-line-width: 1;
+                marker-line-color: #FFF;
+                marker-line-opacity: 1;
+            }
+        </style>
+        
+        
+    </head>
+    <body>
+        <div id="map"></div>
+        
+        
+        <!-- CSS Tags -->
+        
+        <div id="cartocss" class="layer_selector">
+            <p>CartoCSS Selectors</p>
+            <ul>
+                <li data="size-by-lat" data-type="cartocss">Categorize Point Size by Latitude</li>
+                <li data="color-by-type" data-type="cartocss">Color by Type</li>
+                <li data="color-by-category" data-type="cartocss">Color by Category</li>
+                <li data="color-by-project" data-type="cartocss">Color by Project, Size by Carto ID</li>
+                <li data="simple" data-type="cartocss">Reset CartoCSS</li>
+            </ul>
+        </div>
+        
+        <!-- SQL Tags -->
+        
+        <div id="sql" class="layer_selector">
+            <p>SQL Selectors</p>
+            <ul>
+                <li data=" WHERE category = 'Carbon Sequestration'" data-type="sql">Carbon Sequestration</li>
+                <li data=" WHERE category = 'Basic Science'" data-type="sql">Basic Science</li>
+                <li data=" WHERE category = 'Soil Health & Carbon'" data-type="sql">Soil Health and Carbon</li>
+                <li data=" WHERE category = 'Geothermal Systems'" data-type="sql">Geothermal Systems</li>
+                <li data=" WHERE category = 'Atmospheric Science'" data-type="sql">Atmospheric Science</li>
+                <li data=" WHERE category = 'Climate Modeling'" data-type="sql">Climate Modeling</li>
+                <li data="" data-type="sql">Reset SQL</li>
+            </ul>
+        </div>
+        
+        
+        <!-- legend div -->
+        <div class='cartodb-legend category'>
+            <div class="legend-title" style="color:#284a59">Categories</div>
+            <ul>
+                <li><div class="bullet" style="background-color:#e70101"></div>Carbon Sequestration</li>
+                <li><div class="bullet" style="background-color:#1D6996"></div>Basic Science</li>
+                <li><div class="bullet" style="background-color:#38A6A5"></div>Soil Health and Carbon</li>
+                <li><div class="bullet" style="background-color:#0F8554"></div>Geothermal Systems</li>
+                <li><div class="bullet" style="background-color:#73AF48"></div>Atmospheric Science</li>
+                <li><div class="bullet" style="background-color:#EDAD08"></div>Climate Modeling</li>
+            </ul>
+        </div>
+        
+        <!-- legend div
+        <div id="legend" class='cartodb_legend_category'>
+            <p>Legend</p>
+            <ul style="list-style-type:disc">
+                <li>Populated Place</li>
+                <li><div class="bullet" style="background-color:#1D6996"></div>Admin. 1 Capital</li>
+                <li><div class="bullet" style="background-color:#38A6A5"></div>Admin. 0 Capital</li>
+                <li><div class="bullet" style="background-color:#0F8554"></div>Admin. 1 region Capital</li>
+                <li><div class="bullet" style="background-color:#73AF48"></div>Scientific Station</li>
+                <li><div class="bullet" style="background-color:#EDAD08"></div>Admin. O region Capital </li>
+                <li><div class="bullet" style="background-color:#E17C05"></div>Admin. 0 Capital Alt.</li>
+                <li><div class="bullet" style="background-color:#CC503E"></div>Historic Place</li>
+                <li><div class="bullet" style="background-color:#94346E"></div>Meteorological Station</li>
+            </ul>
+        </div>
+        -->
+        
+        <!-- include cartodb.js library -->
+        <script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/cartodb.js" type="text/javascript"></script>
+        
+        <!-- Place your code in the script tags below -->
+        <script type="text/javascript">
+            window.onload = function () {
+                
+                
+                
+                function createSelector(layer) {
+                    var condition = ""; // SQL or CartoCSS string
+                    var $options = $(".layer_selector").find("li");
+                    $options.click(function(e) {
+                                   var $li = $(e.target);
+                                   var selected = $li.attr('data');
+                                   var type = $li.data('type'); // 'sql' or 'cartocss'
+                                   
+                                   if (type === "cartocss") { // if a CartoCSS selector is chosen, set the style
+                                        $options.removeClass('cartocss_selected');
+                                            if (selected !== "simple") {
+                                                $li.addClass('cartocss_selected');
+                                            }
+                                   
+                                            condition = $('#'+selected).text();
+                                            layer.setCartoCSS(condition);
+                                            }
+                                            else { // if a SQL selector is chosen, re-query the data
+                                                $options.removeClass('sql_selected');
+                                                if (selected !== "") {
+                                                    $li.addClass('sql_selected');
+                                                }
+                                   
+                                                layer.setSQL("SELECT * FROM " + tableName + selected);
+                                            }
+                                    });
+                }
+                
+                
+                
+                
+                
+                var tableName = "fullprojectsitedata_6_26_17";
+                
+                // Put layer data into a JS object
+                var layerSource = {
+                    user_name: 'noahbennett',
+                    type: 'cartodb',
+                    sublayers: [{
+                                sql: "SELECT * FROM " + tableName, // All recorded earthquakes past 30 days
+                                cartocss: $("#simple").text() // Simple visualization
+                                }]
+                }
+                
+                // For storing the sublayer
+                var sublayer;
+                
+                // Instantiate new map object, place it in 'map' element
+                var map_object = new L.Map('map', {
+                                           center: [37.7741154,-122.4437914], // San Francisco
+                                           zoom: 7
+                                           });
+                                           
+                                           L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+                                                       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                                       }).addTo(map_object);
+                                                       
+                                                       // Add data layer to your map
+                                                       cartodb.createLayer(map_object,layerSource)
+                                                       .addTo(map_object)
+                                                       .done(function(layer) {
+                                                             sublayer = layer.getSubLayer(0);
+                                                             createSelector(sublayer);
+                                                             })
+                                                             .error(function(err) {
+                                                                    console.log("error: " + err);
+                                                                    });
+            }
+        </script>
+    </body>
+</html>
+
+
